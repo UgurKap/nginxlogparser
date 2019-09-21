@@ -1,0 +1,41 @@
+Nginx web server log parser
+
+Requirement:
+
+1. Program is multi-threaded
+2. Thread number is given by the user at the beginning
+
+Log contains those fields:
+
+* ip
+* date
+* http_request_type
+* url
+* user-agent
+
+User chooses which fields to print.
+
+Plan:
+
+1. Install nginx, learn how it creates log files and where.
+2. Create a log.
+3. Write a single threaded parser as parser.py.
+4. Make it multi-threaded.
+
+Fields:
+
+log_format compression '$remote_addr - $remote_user [$time_local] '
+                           '"$request" $status $body_bytes_sent '
+                           '"$http_referer" "$http_user_agent" "$gzip_ratio
+
+172.68.244.173 - - [24/Aug/2018:12:14:04 +0000] "\x16\x03\x01\x00\xEC\x01\x00\x00\xE8\x03\x03\x8A?\xB5\xFA\x17?\x8A\x9B\x04T>yK\x1A\xF6\x8F_\xBE:.\xF9\xED\xF6\xEE\xFCM\xD0\x88Ji\xDD\xF5 \xFF\xBDm\x98@mo:U\xA6\x0E\xB7\x93\x02sm`\xC6\xD1s0vV*\x88y\xDA&\xFCfZ\xF4\x00\x16\x13\x01\x13\x02\x13\x03\xC0+\xC0/\xC0\x13\x00\x9C\x00/\xC0(\x005\x00" 400 173 "-" "-"
+
+$remote_addr = 172.68.244.173  
+(literal string for compatibility reasons) = -  
+$remote_user (from Auth Header) = -  
+$time_local = [24/Aug/2018:12:14:04 +0000]  
+$request = "\x16\x03\x01\x00\xEC\x01\x00\x00\xE8\x03\x03\x8A?\xB5\xFA\x17?\x8A\x9B\x04T>yK\x1A\xF6\x8F_\xBE:.\xF9\xED\xF6\xEE\xFCM\xD0\x88Ji\xDD\xF5 \xFF\xBDm\x98@mo:U\xA6\x0E\xB7\x93\x02sm`\xC6\xD1s0vV*\x88y\xDA&\xFCfZ\xF4\x00\x16\x13\x01\x13\x02\x13\x03\xC0+\xC0/\xC0\x13\x00\x9C\x00/\xC0(\x005\x00"  
+$status = 400  
+$body_bytes_sent = 173  
+$http_referer = "-"  
+$http_user_agent = "-"
