@@ -16,12 +16,14 @@ gzip_ratios = []
 
 
 def parse(line):
+
     """
     Given a line, it parses the line and saves them in corresponding variables as string objects.
+
     :param line: A line read by readline() function or a sequence of bytes in the same format as a line read by
                  readline(). It must be a sequence of bytes, otherwise regular expression patterns will fail.
-    :return: -
     """
+
     remote_addresses.append(str(re.findall(b"[0-9]*.[0-9]*.[0-9]*.[0-9]*", line)[0]).lstrip("b'").rstrip("'"))
     remote_users.append(str(re.findall(b"-.*\[", line)[0]).lstrip("b'-").rstrip("[' "))
     request_times.append(str(re.findall(b"\[.*\]", line)[0]).lstrip("b'").rstrip("'"))
@@ -32,21 +34,19 @@ def parse(line):
     statuses.append(l[0])
     bytes_sent.append(l[1])
 
-    # l is a placeholder variable, it holds referrer, user_agent, gzip ratios respectively
-    l = str(re.findall(b'[0-9] ".*" ".*" ".*"', line)[0]).lstrip("b'").rstrip("'")[2:].split()
+    # l is a placeholder variable, it holds referrer, user_agent, gzip ratios respectively.
+    l = str(re.findall(b'[0-9] ".*" ".*" ".*"', line)[0]).lstrip("b'").rstrip("'")[2:].split('" "')
     referrers.append(l[0].strip('"'))
     user_agents.append(l[1].strip('"'))
     gzip_ratios.append(l[2].strip('"'))
 
 
-
-
-
 def read(file):
+
     """
-    Reads lines of the given file until it hits an empty line.
-    :param file: a file opened by mmap or os.open()
-    :return: Nothing yet
+    Reads lines of the given file and sends them to parse function until it hits an empty line.
+
+    :param file: a file opened by mmap or os.open() (file must be opened in byte mode)
     """
 
     line = file.readline()
@@ -54,6 +54,62 @@ def read(file):
         parse(line)
         line = file.readline()
 
+
+def menu():
+
+    """
+    This function is the main program loop, it is intended to run in its own thread along with parser threads.
+    """
+
+    menu_text = """What do you want to see?
+    h  : help
+    q  : quit
+    a  : remote_address
+    u  : remote_user
+    t  : time_local
+    r  : requests
+    s  : status
+    b  : body_bytes_sent
+    ref: http_referrer
+    ag : user_agent
+    g  : gzip_ratio"""
+    print(menu_text)
+    while True:
+        print("Your choice:", end=" ")
+        choice = input().lower()
+        if choice == "q":
+            break
+        elif choice == "h":
+            print(menu_text)
+        elif choice == "a":
+            for a in remote_addresses:
+                print(a)
+        elif choice == "u":
+            for a in remote_users:
+                print(a)
+        elif choice == "t":
+            for a in request_times:
+                print(a)
+        elif choice == "r":
+            for a in requests:
+                print(a)
+        elif choice == "s":
+            for a in statuses:
+                print(a)
+        elif choice == "b":
+            for a in bytes_sent:
+                print(a)
+        elif choice == "ref":
+            for a in referrers:
+                print(a)
+        elif choice == "ag":
+            for a in user_agents:
+                print(a)
+        elif choice == "g":
+            for a in gzip_ratios:
+                print(a)
+        else:
+            print("There is no such an option.")
 
 def main():
     # Number of threads will be given by the user as a commandline argument
@@ -72,7 +128,7 @@ def main():
             # This part is where we are using multi-threading
             with concurrent.futures.ThreadPoolExecutor() as executor:
                 threads = [executor.submit(read, m) for _ in range(number_of_threads)]
-
+                threads.append(executor.submit(menu))
                 # for thread in concurrent.futures.as_completed(threads):
                 #     thread.result()
 
