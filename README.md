@@ -9,4 +9,5 @@ An additional thread is used for user interaction.
 #### Example Usages:
 
 python parser.py 4 ==> will read the logs using 4 threads.
+
 python parser.py 100 access_old.log ==> will read the logs in "access_old.log" using 100 threads.
