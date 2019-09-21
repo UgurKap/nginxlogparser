@@ -25,9 +25,21 @@ def parse(line):
     remote_addresses.append(str(re.findall(b"[0-9]*.[0-9]*.[0-9]*.[0-9]*", line)[0]).lstrip("b'").rstrip("'"))
     remote_users.append(str(re.findall(b"-.*\[", line)[0]).lstrip("b'-").rstrip("[' "))
     request_times.append(str(re.findall(b"\[.*\]", line)[0]).lstrip("b'").rstrip("'"))
+    requests.append(str(re.findall(b'".*" [0-9]', line)[0][0:-2]).lstrip("b'").rstrip("'"))
+
+    # l is a placeholder variable, it holds response status and body_bytes sent respectively.
+    l = str(re.findall(b'" [0-9]* [0-9]*', line)[0]).lstrip("b' \"").rstrip("'").split()
+    statuses.append(l[0])
+    bytes_sent.append(l[1])
+
+    # l is a placeholder variable, it holds referrer, user_agent, gzip ratios respectively
+    l = str(re.findall(b'[0-9] ".*" ".*" ".*"', line)[0]).lstrip("b'").rstrip("'")[2:].split()
+    referrers.append(l[0].strip('"'))
+    user_agents.append(l[1].strip('"'))
+    gzip_ratios.append(l[2].strip('"'))
 
 
-    # print(line)
+
 
 
 def read(file):
@@ -67,12 +79,14 @@ def main():
     # for a in remote_addresses:
     #     print(a)
     #
-    for u in remote_users:
-        print(u)
+    # for u in remote_users:
+    #     print(u)
     #
     # for t in request_times:
     #     print(t)
-
+    #
+    # for r in requests:
+    #     print(r)
 
 
 if __name__ == "__main__":
