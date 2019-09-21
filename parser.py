@@ -74,11 +74,13 @@ def menu():
     ref: http_referrer
     ag : user_agent
     g  : gzip_ratio"""
+
     print(menu_text)
+
     while True:
         print("Your choice:", end=" ")
         choice = input().lower()
-
+        # sadly, no switch cases in python
         if choice == "q":
             break
         elif choice == "h":
@@ -131,7 +133,7 @@ def main():
             # This part is where we are using multi-threading
             with concurrent.futures.ThreadPoolExecutor() as executor:
                 threads = [executor.submit(read, m) for _ in range(number_of_threads)]  # parser threads
-                threads.append(executor.submit(menu)) # menu thread
+                threads.append(executor.submit(menu))  # menu thread
 
 
 if __name__ == "__main__":
