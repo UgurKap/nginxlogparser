@@ -1,4 +1,33 @@
-import concurrent.futures, sys, os, mmap, contextlib
+import concurrent.futures
+import contextlib
+import mmap
+import sys
+import re
+
+remote_addresses = []
+remote_users = []
+request_times = []
+requests = []
+statuses = []
+bytes_sent = []
+referrers = []
+user_agents = []
+gzip_ratios = []
+
+
+def parse(line):
+    """
+    Given a line, it parses the line and saves them in corresponding variables as string objects.
+    :param line: A line read by readline() function or a sequence of bytes in the same format as a line read by
+                 readline(). It must be a sequence of bytes, otherwise regular expression patterns will fail.
+    :return: -
+    """
+    remote_addresses.append(str(re.findall(b"[0-9]*.[0-9]*.[0-9]*.[0-9]*", line)[0]).lstrip("b'").rstrip("'"))
+    remote_users.append(str(re.findall(b"-.*\[", line)[0]).lstrip("b'-").rstrip("[' "))
+    request_times.append(str(re.findall(b"\[.*\]", line)[0]).lstrip("b'").rstrip("'"))
+
+
+    # print(line)
 
 
 def read(file):
@@ -9,8 +38,8 @@ def read(file):
     """
 
     line = file.readline()
-    while line:
-        print(line)
+    while line:  # We are not even going to try to parse if line is empty.
+        parse(line)
         line = file.readline()
 
 
@@ -34,6 +63,16 @@ def main():
 
                 # for thread in concurrent.futures.as_completed(threads):
                 #     thread.result()
+
+    # for a in remote_addresses:
+    #     print(a)
+    #
+    for u in remote_users:
+        print(u)
+    #
+    # for t in request_times:
+    #     print(t)
+
 
 
 if __name__ == "__main__":
