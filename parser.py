@@ -18,7 +18,8 @@ gzip_ratios = []
 def parse(line):
 
     """
-    Given a line, it parses the line and saves them in corresponding variables as string objects.
+    Given a line, it parses the line with regular expression patterns and saves them
+    in corresponding variables as string objects.
 
     :param line: A line read by readline() function or a sequence of bytes in the same format as a line read by
                  readline(). It must be a sequence of bytes, otherwise regular expression patterns will fail.
@@ -77,6 +78,7 @@ def menu():
     while True:
         print("Your choice:", end=" ")
         choice = input().lower()
+
         if choice == "q":
             break
         elif choice == "h":
@@ -85,31 +87,32 @@ def menu():
             for a in remote_addresses:
                 print(a)
         elif choice == "u":
-            for a in remote_users:
-                print(a)
+            for u in remote_users:
+                print(u)
         elif choice == "t":
-            for a in request_times:
-                print(a)
+            for t in request_times:
+                print(t)
         elif choice == "r":
-            for a in requests:
-                print(a)
+            for r in requests:
+                print(r)
         elif choice == "s":
-            for a in statuses:
-                print(a)
+            for s in statuses:
+                print(s)
         elif choice == "b":
-            for a in bytes_sent:
-                print(a)
+            for b in bytes_sent:
+                print(b)
         elif choice == "ref":
-            for a in referrers:
-                print(a)
+            for r in referrers:
+                print(r)
         elif choice == "ag":
-            for a in user_agents:
-                print(a)
+            for ag in user_agents:
+                print(ag)
         elif choice == "g":
-            for a in gzip_ratios:
-                print(a)
+            for g in gzip_ratios:
+                print(g)
         else:
             print("There is no such an option.")
+
 
 def main():
     # Number of threads will be given by the user as a commandline argument
@@ -127,22 +130,8 @@ def main():
         with contextlib.closing(mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)) as m:
             # This part is where we are using multi-threading
             with concurrent.futures.ThreadPoolExecutor() as executor:
-                threads = [executor.submit(read, m) for _ in range(number_of_threads)]
-                threads.append(executor.submit(menu))
-                # for thread in concurrent.futures.as_completed(threads):
-                #     thread.result()
-
-    # for a in remote_addresses:
-    #     print(a)
-    #
-    # for u in remote_users:
-    #     print(u)
-    #
-    # for t in request_times:
-    #     print(t)
-    #
-    # for r in requests:
-    #     print(r)
+                threads = [executor.submit(read, m) for _ in range(number_of_threads)]  # parser threads
+                threads.append(executor.submit(menu)) # menu thread
 
 
 if __name__ == "__main__":
