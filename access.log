@@ -38,3 +38,5 @@
 127.0.0.1 - - [21/Sep/2019:01:46:15 +0300] "GET / HTTP/1.1" 200 612 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36" "-"
 127.0.0.1 - - [21/Sep/2019:01:46:25 +0300] "GET / HTTP/1.1" 200 612 "-" "curl/7.63.0" "-"
 127.0.0.1 - - [21/Sep/2019:01:47:04 +0300] "GET / HTTP/1.1" 200 612 "-" "python-requests/2.22.0" "-"
+172.68.244.173 - - [24/Aug/2018:12:14:04 +0000] "\x16\x03\x01\x00\xEC\x01\x00\x00\xE8\x03\x03\x8A?\xB5\xFA\x17?\x8A\x9B\x04T>yK\x1A\xF6\x8F_\xBE:.\xF9\xED\xF6\xEE\xFCM\xD0\x88Ji\xDD\xF5 \xFF\xBDm\x98@mo:U\xA6\x0E\xB7\x93\x02sm`\xC6\xD1s0vV*\x88y\xDA&\xFCfZ\xF4\x00\x16\x13\x01\x13\x02\x13\x03\xC0+\xC0/\xC0\x13\x00\x9C\x00/\xC0(\x005\x00" 400 173 "-" "-"
+
