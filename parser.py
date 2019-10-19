@@ -80,38 +80,19 @@ def menu():
     while True:
         print("Your choice:", end=" ")
         choice = input().lower()
-        # sadly, no switch cases in python
+
         if choice == "q":
             break
         elif choice == "h":
             print(menu_text)
-        elif choice == "a":
-            for a in remote_addresses:
-                print(a)
-        elif choice == "u":
-            for u in remote_users:
-                print(u)
-        elif choice == "t":
-            for t in request_times:
-                print(t)
-        elif choice == "r":
-            for r in requests:
-                print(r)
-        elif choice == "s":
-            for s in statuses:
-                print(s)
-        elif choice == "b":
-            for b in bytes_sent:
-                print(b)
-        elif choice == "ref":
-            for r in referrers:
-                print(r)
-        elif choice == "ag":
-            for ag in user_agents:
-                print(ag)
-        elif choice == "g":
-            for g in gzip_ratios:
-                print(g)
+
+        choices = {"a": remote_addresses, "u": remote_users,
+                   "t": request_times, "r": requests, "s": statuses,
+                   "b": bytes_sent, "ref": referrers, "ag": user_agents,
+                   "g": gzip_ratios}
+        container = choices.get(choice)
+        if container:
+            print(*container, sep="\n")
         else:
             print("There is no such an option.")
 
