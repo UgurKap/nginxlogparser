@@ -13,6 +13,11 @@ bytes_sent = []
 referrers = []
 user_agents = []
 gzip_ratios = []
+choices = {"a": remote_addresses, "u": remote_users,
+           "t": request_times, "r": requests, "s": statuses, 
+           "b": bytes_sent, "ref": referrers, "ag": user_agents,
+           "g": gzip_ratios}
+        
 
 
 def parse(line):
@@ -80,18 +85,13 @@ def menu():
     while True:
         print("Your choice:", end=" ")
         choice = input().lower()
+        container = choices.get(choice)
 
         if choice == "q":
             break
         elif choice == "h":
             print(menu_text)
-
-        choices = {"a": remote_addresses, "u": remote_users,
-                   "t": request_times, "r": requests, "s": statuses,
-                   "b": bytes_sent, "ref": referrers, "ag": user_agents,
-                   "g": gzip_ratios}
-        container = choices.get(choice)
-        if container:
+        elif container:
             print(*container, sep="\n")
         else:
             print("There is no such an option.")
